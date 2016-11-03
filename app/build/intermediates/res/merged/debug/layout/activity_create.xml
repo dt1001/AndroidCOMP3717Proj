@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_create"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.dallas.assignment1.CreateActivity"><![CDATA[
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"">
+    ]]>
+
+    <RelativeLayout
+        android:id="@+id/recipe_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:text="Title:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_txtview"
+            android:layout_alignLeft="@+id/title_edit_txt"
+            android:layout_alignStart="@+id/title_edit_txt"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="textPersonName"
+            android:text="Title"
+            android:ems="10"
+            android:id="@+id/title_edit_txt" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/recipe_title"
+        android:layout_alignLeft="@+id/recipe_title"
+        android:layout_alignStart="@+id/recipe_title">
+        <TextView
+            android:text="Category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/category_txtview"
+            android:layout_alignLeft="@+id/category_edit_txt"
+            android:layout_alignStart="@+id/category_edit_txt"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Category"
+            android:ems="10"
+            android:layout_marginTop="10dp"
+            android:id="@+id/category_edit_txt" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/category"
+        android:layout_alignLeft="@+id/category"
+        android:layout_alignStart="@+id/category"
+        android:id="@+id/cookingtime"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:text="Cooking Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cooktime_txtview"
+            android:layout_alignLeft="@+id/cookingtme_edit_txt"
+            android:layout_alignStart="@+id/cookingtme_edit_txt"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Cooking Time"
+            android:ems="10"
+            android:layout_marginTop="10dp"
+            android:id="@+id/cookingtme_edit_txt" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_below="@+id/cookingtime"
+        android:layout_alignLeft="@+id/cookingtime"
+        android:layout_alignStart="@+id/cookingtime"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:text="Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/desciption_txtview"
+            android:layout_alignLeft="@+id/desciption_txt"
+            android:layout_alignStart="@+id/desciption_txt" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:layout_marginTop="15dp"
+            android:id="@+id/desciption_txt"
+            android:background="@drawable/layout_border"
+            android:layout_below="@+id/desciption_txtview"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/description"
+        android:layout_alignLeft="@+id/description"
+        android:layout_alignStart="@+id/description">
+
+    <Button
+        android:text="Add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/desciption_txt"
+        android:layout_alignStart="@+id/desciption_txt"
+        android:layout_marginRight="45dp" />
+
+    <Button
+        android:text="Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/add_btn"
+        android:layout_alignRight="@+id/desciption_txt"
+        android:layout_alignEnd="@+id/desciption_txt"
+        android:id="@+id/cancel_btn" />
+    </LinearLayout>
+
+
+</RelativeLayout>
