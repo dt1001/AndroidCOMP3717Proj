@@ -1,14 +1,16 @@
 package comp3717.bcit.ca.projectapp;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,22 +19,40 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 /**
  * Used to get parameters from a user to create a new recipe
  */
-public class CreateActivity extends Activity {
+public class CreateActivity extends Activity{
     private RecipeDbHelper dbhelper;
+    private static int READ_EXTERNAL_STORAGE = 24;
     private static final int RESULT_LOAD_IMG = 1;
-    private String imgDecodableString;
-    private byte[] imgByteArr;
+    private String imgPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
         dbhelper = new RecipeDbHelper(this);
+        if(!(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED) ) {
+            //request read
+            ActivityCompat.requestPermissions(CreateActivity.this,
+                    new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                    },
+                    READ_EXTERNAL_STORAGE);
+        }
+
+        //add image onclick listener
+        final TextView addImage = (TextView) findViewById(R.id.add_img);
+        ImageView recipeImage = (ImageView) findViewById(R.id.recipe_image);
+        recipeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addImage.setText("Click to change image");
+                loadImagefromGallery(view);
+            }
+        });
+
+
         //create button onClickListener
         Button add_btn = (Button) findViewById(R.id.add_btn);
         add_btn.setOnClickListener(new View.OnClickListener(){
@@ -58,16 +78,7 @@ public class CreateActivity extends Activity {
             }
         });
 
-        //add image onclick listener
-        final TextView addImage = (TextView) findViewById(R.id.add_img);
-        ImageView recipeImage = (ImageView) findViewById(R.id.recipe_image);
-        recipeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addImage.setText("Click to change image");
-                loadImagefromGallery(view);
-            }
-        });
+
     }
 
     /**
@@ -85,12 +96,12 @@ public class CreateActivity extends Activity {
         //get fields from activity
         String title = titleView.getText().toString();
         String category = categoryView.getText().toString();
-        int cookingTime = Integer.parseInt(cookingTimeView.getText().toString());
+        String cookingTime = cookingTimeView.getText().toString();
         String ingredients = ingredientsView.getText().toString();
         String instructions = instructionsView.getText().toString();
         //do error checking
         //add to database
-        dbhelper.addRecipe(title,imgByteArr,category,cookingTime,ingredients,instructions);
+        dbhelper.addRecipe(title,imgPath,category,cookingTime,ingredients,instructions);
     }
 
     /**
@@ -123,29 +134,36 @@ public class CreateActivity extends Activity {
                 // Move to first row
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathArray[0]);
-                imgDecodableString = cursor.getString(columnIndex);
+                imgPath = cursor.getString(columnIndex);
+                Log.d("Img Path",imgPath);
                 cursor.close();
                 ImageView recipeImg = (ImageView) findViewById(R.id.recipe_image);
                 // Set the Image in ImageView after decoding the String
-                Bitmap bitmap = BitmapFactory.decodeFile(imgDecodableString);//image bitmap
-                recipeImg.setImageBitmap(bitmap);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                imgByteArr = stream.toByteArray();
-                stream.close();
+                recipeImg.setImageBitmap(BitmapFactory.decodeFile(imgPath));
             }
             else {
                 Toast.makeText(this, "No image was selected",Toast.LENGTH_LONG).show();
             }
         }
-        catch(IOException e){
-            e.printStackTrace();
-            Log.d("Error get image:",e.getMessage());
-        }
         catch (Exception e) {
             e.printStackTrace();
             Log.d("Error get image:",e.getMessage());
             Toast.makeText(this, "Could not get the desired image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if(requestCode==READ_EXTERNAL_STORAGE && grantResults.length>0){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+            else {
+                // permission denied
+            }
+        }
+        else{
+            super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         }
     }
 }

@@ -22,14 +22,14 @@ public class RecipeFragment extends Fragment {
         // Get all names and images from the recipe list
         ArrayList<Recipe> recipeList = (ArrayList)dbhelper.getAllRecipes();
         ArrayList<String> recipeCaptions = new ArrayList<>();
-        ArrayList<byte[]> recipeImages = new ArrayList<>();
+        ArrayList<String> recipeImages = new ArrayList<>();
         for (int i = 0; i < recipeList.size(); i++) {
             recipeCaptions.add(recipeList.get(i).getTitle());
-            recipeImages.add(recipeList.get(i).getImageBlob());
+            recipeImages.add(recipeList.get(i).getImagePath());
         }
 
         // Set the names and images as captioned images
-        CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(recipeCaptions.toArray(new String[0]), recipeImages.toArray(new byte[0][]));
+        CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(recipeCaptions.toArray(new String[0]), recipeImages.toArray(new String[0]));
         recipeRecycler.setAdapter(adapter);
 
         // List items as a linear way

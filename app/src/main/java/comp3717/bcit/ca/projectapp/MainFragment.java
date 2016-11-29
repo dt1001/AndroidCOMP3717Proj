@@ -24,8 +24,8 @@ public class MainFragment extends Fragment {
         Recipe recipe = dbhelper.getRecipe(0);
         final String[]recipeName = new String[0];
         recipeName[0]=recipe.getTitle();
-        final byte [][] recipeImage = new byte[0][];
-        recipeImage[0] = recipe.getImageBlob();
+        final String [] recipeImage = new String[0];
+        recipeImage[0] = recipe.getImagePath();
 
         // Set the names and images as captioned images
         CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(recipeName, recipeImage);

@@ -1,9 +1,9 @@
 package comp3717.bcit.ca.projectapp;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder> {
 
-    private byte[][] image;
+    private String[] image;
     private String[] caption;
     private Listener listener;
 
@@ -28,7 +28,7 @@ class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter
         }
     }
 
-    public CaptionedImagesAdapter(String []caption, byte[][]image){
+    public CaptionedImagesAdapter(String []caption, String[]image){
         this.image=image;
         this.caption=caption;
     }
@@ -54,12 +54,12 @@ class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter
         ImageView imageView = (ImageView)cardView.findViewById(R.id.info_image);
         //Drawable drawable = cardView.getResources().getDrawable(imageIds[position]);
         //imageView.setImageDrawable(drawable);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(image[0],0,image[0].length);
-        imageView.setImageBitmap(bitmap);
+        imageView.setImageBitmap(BitmapFactory.decodeFile(image[position]));
+        Log.d("Image+Caption",image[position]+" "+caption[position]);
 
         // Set caption text
         TextView textView = (TextView)cardView.findViewById(R.id.info_text);
-        textView.setText(caption[0]);
+        textView.setText(caption[position]);
 
         // Display detail after click
         cardView.setOnClickListener(new View.OnClickListener() {

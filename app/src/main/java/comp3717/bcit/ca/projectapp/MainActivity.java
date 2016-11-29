@@ -16,8 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity{
+    private String[] titles;
+    private ListView drawerList;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private int currentPosition = 0;
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -25,18 +29,10 @@ public class MainActivity extends Activity {
             selectItem(position);
         }
     };
-
-    private String[] titles;
-    private ListView drawerList;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle drawerToggle;
-    private int currentPosition = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Set titles of contents on the drawer
         titles = getResources().getStringArray(R.array.titles);
         drawerList = (ListView)findViewById(R.id.drawer);

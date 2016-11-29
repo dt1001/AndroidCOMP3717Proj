@@ -3,7 +3,7 @@ package comp3717.bcit.ca.projectapp;
 public class Recipe {
 
     private String title;
-    private byte[] imgBlob;
+    private String imgPath;
     private String category;
     private String cookingTime;
     private String ingredients;
@@ -13,10 +13,10 @@ public class Recipe {
 
     }
 
-    public Recipe(String title, byte[] imgBlob, String category, String cookingTime, String ingredients, String procedure) {
+    public Recipe(String title, String imgPath, String category, String cookingTime, String ingredients, String procedure) {
         //this.recipe_id = recipe_id;
         this.title = title;
-        this.imgBlob = imgBlob;
+        this.imgPath = imgPath;
         this.category = category;
         this.cookingTime = cookingTime;
         this.ingredients = ingredients;
@@ -31,12 +31,12 @@ public class Recipe {
         return this.title;
     }
 
-    public void setImageBlob(byte []imgBlob) {
-        this.imgBlob = imgBlob;
+    public void setImagePath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
-    public byte[] getImageBlob() {
-        return this.imgBlob;
+    public String getImagePath() {
+        return this.imgPath;
     }
 
     public void setCategory(String category) {

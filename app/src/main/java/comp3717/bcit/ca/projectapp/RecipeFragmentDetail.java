@@ -1,7 +1,6 @@
 package comp3717.bcit.ca.projectapp;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 public class RecipeFragmentDetail extends Activity {
 
     public static final String EXTRA_RecipeNo = "recipeNo";
-    public static final String EXTRA_RecipeTitle = "recipeName";
+    public static final String EXTRA_RecipeTitle = "recipeTitle";
     private RecipeDbHelper dbhelper;
 
     @Override
@@ -24,10 +23,9 @@ public class RecipeFragmentDetail extends Activity {
         Recipe recipe = dbhelper.getRecipeByTitle(recipeTitle);
 
         // Get selected recipe image
-        byte [] recipeImage = recipe.getImageBlob();
+        String recipeImage = recipe.getImagePath();
         ImageView imageView = (ImageView)findViewById(R.id.recipe_image);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(recipeImage,0,recipeImage.length);
-        imageView.setImageBitmap(bitmap);
+        imageView.setImageBitmap(BitmapFactory.decodeFile(recipeImage));
 
         // Get selected recipe name
         TextView textViewName = (TextView)findViewById(R.id.recipe_title);

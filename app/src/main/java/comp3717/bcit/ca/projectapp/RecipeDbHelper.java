@@ -20,7 +20,7 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_RECIPE = "recipe";
     private static final String RECIPE_ID = "_id";
     private static final String RECIPE_TITLE = "title";
-    private static final String RECIPE_IMAGE_BLOB = "img_blob";
+    private static final String RECIPE_IMAGE_PATH = "img_path";
     private static final String RECIPE_CATEGORY = "category";
     private static final String RECIPE_COOKING_TIME = "cooking_time";
     private static final String RECIPE_INGREDIENTS = "ingredients";
@@ -39,12 +39,22 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
                 "CREATE TABLE IF NOT EXISTS " + TABLE_RECIPE + " ( " +
                         RECIPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         RECIPE_TITLE + " TEXT NOT NULL, " +
-                        RECIPE_IMAGE_BLOB + " BLOB NOT NULL, " +
+                        RECIPE_IMAGE_PATH + " TEXT NOT NULL, " +
                         RECIPE_CATEGORY + " TEXT NOT NULL, " +
                         RECIPE_COOKING_TIME + " TEXT NOT NULL, " +
                         RECIPE_INGREDIENTS + " MEMO, " +
                         RECIPE_PROCEDURE + " MEMO)";
         db.execSQL(CREATE_RECIPE_TABLE);
+
+        //default entry
+        ContentValues values = new ContentValues();
+        values.put(RECIPE_TITLE, "Caesarsalad");
+        values.put(RECIPE_IMAGE_PATH, "app\\src\\main\\res\\drawable-nodpi\\caesarsalad.jpg");
+        values.put(RECIPE_CATEGORY, "Salad");
+        values.put(RECIPE_COOKING_TIME, "5min");
+        values.put(RECIPE_INGREDIENTS, "Salad Dressing\n Cabbage\n Crutons");
+        values.put(RECIPE_PROCEDURE, "Cut all vegies\n put into bowl\n stir with dressing");
+        db.insert(TABLE_RECIPE, null, values);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVerson) {
@@ -58,9 +68,9 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
                 "CREATE TABLE IF NOT EXISTS " + TABLE_RECIPE + " ( " +
                         RECIPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         RECIPE_TITLE + " TEXT NOT NULL, " +
-                        RECIPE_IMAGE_BLOB + " BLOB NOT NULL, " +
+                        RECIPE_IMAGE_PATH + " TEXT NOT NULL, " +
                         RECIPE_CATEGORY + " TEXT NOT NULL, " +
-                        RECIPE_COOKING_TIME + " INTEGER NOT NULL, " +
+                        RECIPE_COOKING_TIME + " TEXT NOT NULL, " +
                         RECIPE_INGREDIENTS + " TEXT NOT NULL, " +
                         RECIPE_PROCEDURE + " TEXT NOT NULL)";
         db.execSQL(CREATE_RECIPE_TABLE);
@@ -79,7 +89,7 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(RECIPE_TITLE, recipe.getTitle());
-        values.put(RECIPE_IMAGE_BLOB, recipe.getImageBlob());
+        values.put(RECIPE_IMAGE_PATH, recipe.getImagePath());
         values.put(RECIPE_CATEGORY, recipe.getCategory());
         values.put(RECIPE_COOKING_TIME, recipe.getCookingTime());
         values.put(RECIPE_INGREDIENTS, recipe.getIngredients());
@@ -90,17 +100,17 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
     /**
      * Addes recipe with given parameters to the database
      * @param title
-     * @param imgBlob
+     * @param imgPath
      * @param category
      * @param cookingTime
      * @param ingredients
      * @param procedure
      */
-    void addRecipe(String title, byte[] imgBlob, String category, int cookingTime, String ingredients, String procedure) {
+    void addRecipe(String title, String imgPath, String category, String cookingTime, String ingredients, String procedure) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(RECIPE_TITLE, title);
-        values.put(RECIPE_IMAGE_BLOB, imgBlob);
+        values.put(RECIPE_IMAGE_PATH, imgPath);
         values.put(RECIPE_CATEGORY, category);
         values.put(RECIPE_COOKING_TIME, cookingTime);
         values.put(RECIPE_INGREDIENTS, ingredients);
@@ -116,13 +126,13 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
     public Recipe getRecipe(int recipe_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_RECIPE, new String[] { RECIPE_ID,
-                        RECIPE_TITLE, RECIPE_IMAGE_BLOB, RECIPE_CATEGORY, RECIPE_COOKING_TIME,
+                        RECIPE_TITLE, RECIPE_IMAGE_PATH, RECIPE_CATEGORY, RECIPE_COOKING_TIME,
                         RECIPE_INGREDIENTS, RECIPE_PROCEDURE}, RECIPE_ID + "=?",
                 new String[] { Integer.toString(recipe_id) }, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        Recipe c = new Recipe(cursor.getString(1), cursor.getBlob(2),
+        Recipe c = new Recipe(cursor.getString(1), cursor.getString(2),
                 cursor.getString(3), cursor.getString(4),
                 cursor.getString(5), cursor.getString(6));
         return c;
@@ -137,7 +147,7 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_RECIPE,
                         new String[] {
-                                RECIPE_ID, RECIPE_TITLE, RECIPE_IMAGE_BLOB,
+                                RECIPE_ID, RECIPE_TITLE, RECIPE_IMAGE_PATH,
                                 RECIPE_CATEGORY, RECIPE_COOKING_TIME,
                                 RECIPE_INGREDIENTS, RECIPE_PROCEDURE
                         },
@@ -147,7 +157,7 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        Recipe c = new Recipe(cursor.getString(1), cursor.getBlob(2),
+        Recipe c = new Recipe(cursor.getString(1), cursor.getString(2),
                 cursor.getString(3), cursor.getString(4),
                 cursor.getString(5), cursor.getString(6));
         return c;
@@ -178,7 +188,7 @@ public class RecipeDbHelper extends SQLiteOpenHelper {
             do {
                 Recipe recipe = new Recipe();
                 recipe.setTitle(cursor.getString(1));
-                recipe.setImageBlob(cursor.getBlob(2));
+                recipe.setImagePath(cursor.getString(2));
                 recipe.setCategory(cursor.getString(3));
                 recipe.setCookingTime(cursor.getString(4));
                 recipe.setIngredients(cursor.getString(5));
