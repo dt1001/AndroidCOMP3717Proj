@@ -1,0 +1,16 @@
+<resources>
+  <string name="app_name">My Recipe App</string>
+  <string name="title_top">Main fragment</string>
+  <string name="action_settings">Settings</string>
+
+  <string-array name="titles">
+    <item>Main</item>
+    <item>Recipes</item>
+    <item>Create a recipe</item>
+  </string-array>
+
+  <string name="open_drawer">Open drawer</string>
+  <string name="close_drawer">Close drawer</string>
+  <string name="title_activity_recipe_detail">Recipe Detail</string>
+  <string name="welcome_text">Welcome to My Recipe. You can add recipes by clicking the add button.</string>
+</resources>
